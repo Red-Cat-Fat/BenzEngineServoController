@@ -4,6 +4,6 @@
 #include <EncButton.h>
 
 // project libs
-#include <Devices.h>
-#include <View.h>
-#include <StateMachine/StateMachine.hpp>
+#include <Devices.hpp>
+#include <View.hpp>
+#include <StateMachine.hpp>

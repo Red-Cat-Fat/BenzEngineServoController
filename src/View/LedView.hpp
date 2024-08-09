@@ -1,3 +1,5 @@
+#pragma once
+
 class LedView
 {
 private:
@@ -11,5 +13,7 @@ public:
     void red();
     void green();
     void yellow();
+    void enableAll();
     void showLoadAnimation();
+    void showShortAnimation();
 };

@@ -1,8 +1,8 @@
-#include "StateMachine.hpp"
+#include "OpenCloseWorkStateMachine.hpp"
 #include <Arduino.h>
-#include <defines.h>
+#include <defines.hpp>
 
-StateMachine::StateMachine(LedView *view)
+OpenCloseWorkStateMachine::OpenCloseWorkStateMachine(LedView *view)
 {
     _view = view;
     _servo = new ServoContainer(SERVO_PIN, 90, 90);
@@ -10,11 +10,11 @@ StateMachine::StateMachine(LedView *view)
     start();
 }
 
-StateMachine::~StateMachine()
+OpenCloseWorkStateMachine::~OpenCloseWorkStateMachine()
 {
 }
 
-void StateMachine::workTick()
+void OpenCloseWorkStateMachine::workTick()
 {
     int newState = digitalRead(READ_LOC_PIN);
     if (_lastReadState != newState)
@@ -26,17 +26,17 @@ void StateMachine::workTick()
             _servo->open();
     }
 }
-void StateMachine::readOpenTick()
+void OpenCloseWorkStateMachine::readOpenTick()
 {
     _servo->setOpen(_resister->getValue());
 }
 
-void StateMachine::readLockTick()
+void OpenCloseWorkStateMachine::readCloseTick()
 {
     _servo->setClose(_resister->getValue());
 }
 
-void StateMachine::nextState()
+void OpenCloseWorkStateMachine::nextState()
 {
     switch (_currentState)
     {
@@ -52,7 +52,7 @@ void StateMachine::nextState()
     }
 }
 
-void StateMachine::tickState()
+void OpenCloseWorkStateMachine::tick()
 {
     _servo->tick();
     switch (_currentState)
@@ -61,7 +61,7 @@ void StateMachine::tickState()
         workTick();
         break;
     case ReadLock:
-        readLockTick();
+        readCloseTick();
         break;
     case ReadOpen:
         readOpenTick();
@@ -69,24 +69,24 @@ void StateMachine::tickState()
     }
 }
 
-void StateMachine::start()
+void OpenCloseWorkStateMachine::start()
 {
     enableWorkState();
 }
 
-void StateMachine::enableWorkState()
+void OpenCloseWorkStateMachine::enableWorkState()
 {
     _currentState = Work;
     _view->green();
 }
 
-void StateMachine::enableReadLockState()
+void OpenCloseWorkStateMachine::enableReadLockState()
 {
     _currentState = ReadLock;
     _view->red();
 }
 
-void StateMachine::enableReadOpenState()
+void OpenCloseWorkStateMachine::enableReadOpenState()
 {
     _currentState = ReadOpen;
     _view->yellow();

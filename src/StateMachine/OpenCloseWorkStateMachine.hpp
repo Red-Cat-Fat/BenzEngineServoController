@@ -1,7 +1,7 @@
-#include <Devices.h>
-#include <View.h>
+#include <Devices.hpp>
+#include <View.hpp>
 
-class StateMachine
+class OpenCloseWorkStateMachine
 {
 private:
     enum
@@ -11,13 +11,13 @@ private:
         ReadOpen = 2
     } _currentState;
 
-    ServoContainer *_servo;
     LedView *_view;
+    ServoContainer *_servo;
     ResisterChanger *_resister;
     int _lastReadState = 0;
 
     void readOpenTick();
-    void readLockTick();
+    void readCloseTick();
 
     void enableWorkState();
     void enableReadLockState();
@@ -26,8 +26,8 @@ private:
     void start();
 
 public:
-    StateMachine(LedView *view);
-    ~StateMachine();
+    OpenCloseWorkStateMachine(LedView *view);
+    ~OpenCloseWorkStateMachine();
     void nextState();
-    void tickState();
+    void tick();
 };
